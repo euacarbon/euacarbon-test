@@ -1,0 +1,43 @@
+# Note this is a test token on the testnet
+
+[METADATA]
+modified = 2023-06-17T00:00:00.000Z
+expires = 2024-06-17T00:00:00.000Z
+
+[[ACCOUNTS]]
+address = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
+desc = "Cold Issuing Wallet"
+
+[[ACCOUNTS]]
+address = "ryN1GyBDfXn8TBTDfG8BCZTeFZHXUUqjz"
+desc = "Hot Dispensing Wallet"
+
+[[PRINCIPALS]]
+name = "EUA Carbon Token Team"
+email = "token@euacarbontoken.biz"
+
+[[ISSUERS]]
+address = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
+name = "EUA Carbon Token"
+
+[[ISSUERS.WEBLINKS]]
+url = "https://euacarbontoken.biz"
+type = "info"
+title = "Official Website"
+
+[[CURRENCIES]]
+code = "E2C"
+issuer = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
+network = "testnet"
+display_decimals = 2
+
+[[TOKENS]]
+issuer = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
+currency = "E2C"
+name = "EUACarbon Token"
+desc = "Demo of tokenising EUA Carbon Credits. 1 token == 1 tonne."
+icon = "https://euacarbontoken.biz/token_logo.png"
+
+[[TOKENS.WEBLINKS]]
+url = "https://euacarbontoken.biz/e2c"
+type = "company"

@@ -1,10 +1,30 @@
-oclif-hello-world
+EUA Carbon Test Tool
 =================
 
-oclif example Hello World CLI
+This is a basic Swiss Army-knife command line tool for the EUA carbon coin. Starting
+with the most basic functionality to issue the token, this will grow to be our main
+admin tool for the first stages of the project.
+
+Currently the tool does two things:
+* Issue the token
+* Send it to someone
+
+Using XRLP, the core token functionality is part of the ledger, so this does far less
+than its Ethereum equivalent!
+
+Future Functionality
+---------
+* Whitelisting using either Trust Lines or whitelists in Hook Storage.
+    * Building an Oracle for Xumm KYC status
+    * How to handle jurisdictional restrictions?
+* Retiring credits through blackhole
+    * Using Emitted Transactions to generate receipt NFTs?
+* XLS-30d AMM liquidity provision in addition to native ledger bid/ask
+    * Need to research capital efficiency.
+    * Need to estimate behaviour under market dislocations
+* Bridging to ERC20/BIP20
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
 [![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/oclif/hello-world/blob/main/LICENSE)
 
 <!-- toc -->
@@ -27,8 +47,7 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`euacarbon hello PERSON`](#euacarbon-hello-person)
-* [`euacarbon hello world`](#euacarbon-hello-world)
+* [`euacarbon create-token`](#euacarbon-create-token)
 * [`euacarbon help [COMMANDS]`](#euacarbon-help-commands)
 * [`euacarbon plugins`](#euacarbon-plugins)
 * [`euacarbon plugins:install PLUGIN...`](#euacarbon-pluginsinstall-plugin)
@@ -39,46 +58,24 @@ USAGE
 * [`euacarbon plugins:uninstall PLUGIN...`](#euacarbon-pluginsuninstall-plugin-1)
 * [`euacarbon plugins:uninstall PLUGIN...`](#euacarbon-pluginsuninstall-plugin-2)
 * [`euacarbon plugins update`](#euacarbon-plugins-update)
+* [`euacarbon send-to TOADDRESS`](#euacarbon-send-to-toaddress)
 
-## `euacarbon hello PERSON`
+## `euacarbon create-token`
 
-Say hello
-
-```
-USAGE
-  $ euacarbon hello PERSON -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
-
-FLAGS
-  -f, --from=<value>  (required) Who is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
-```
-
-_See code: [dist/commands/hello/index.ts](https://github.com/euacarbon/euacarbon/blob/v0.0.0/dist/commands/hello/index.ts)_
-
-## `euacarbon hello world`
-
-Say hello world
+Create the token.
 
 ```
 USAGE
-  $ euacarbon hello world
+  $ euacarbon create-token
 
 DESCRIPTION
-  Say hello world
+  Create the token.
 
 EXAMPLES
-  $ euacarbon hello world
-  hello world! (./src/commands/hello/world.ts)
+  $ euacarbon create-token
 ```
+
+_See code: [dist/commands/create-token.ts](https://github.com/euacarbon/euacarbon/blob/v0.0.0/dist/commands/create-token.ts)_
 
 ## `euacarbon help [COMMANDS]`
 
@@ -332,4 +329,24 @@ FLAGS
 DESCRIPTION
   Update installed plugins.
 ```
+
+## `euacarbon send-to TOADDRESS`
+
+Send some tokens from the hot wallet.
+
+```
+USAGE
+  $ euacarbon send-to TOADDRESS
+
+ARGUMENTS
+  TOADDRESS  XRPL address to send to
+
+DESCRIPTION
+  Send some tokens from the hot wallet.
+
+EXAMPLES
+  $ euacarbon send
+```
+
+_See code: [dist/commands/send-to.ts](https://github.com/euacarbon/euacarbon/blob/v0.0.0/dist/commands/send-to.ts)_
 <!-- commandsstop -->

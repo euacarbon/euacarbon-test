@@ -12,7 +12,11 @@ Currently the tool does two things:
 Using XRLP, the core token functionality is part of the ledger, so this does far less
 than its Ethereum equivalent!
 
-Future Functionality
+I would love to show something highly complex here! But the fun bit will come later when the tokenisation requirements slowly reveal themselves to us :-)
+
+For a proof of concept, this does what we need it to.
+
+Possible Future Functionality
 ---------
 * Whitelisting using either Trust Lines or whitelists in Hook Storage.
     * Building an Oracle for Xumm KYC status

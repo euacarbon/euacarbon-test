@@ -1,4 +1,4 @@
-import {Args, Flags} from '@oclif/core'
+import {Args} from '@oclif/core'
 import {Client, Wallet} from 'xrpl'
 import 'dotenv/config'
 import AbstractXrplCommand from '../abstract-xrpl-command'
@@ -7,7 +7,7 @@ export default class SendToken extends AbstractXrplCommand {
   static description = 'Send some tokens from the hot wallet.'
 
   static examples = [
-    '$ euacarbon send',
+    '$ euacarbon send-to rsRbBw48v8JRoaDkLkm6VdDAG42eiLjebL',
   ]
 
   static args = {
@@ -19,7 +19,6 @@ export default class SendToken extends AbstractXrplCommand {
     super(argv, config)
     SendToken.flags = {
       ...AbstractXrplCommand.sharedFlags,
-      quantity: Flags.integer({char: 'q', name: 'quantity', description: 'Amount to send'}),
     }
   }
 
@@ -30,15 +29,14 @@ export default class SendToken extends AbstractXrplCommand {
     await api.connect()
 
     const wallet = Wallet.fromSeed(flags.hotWallet)
-    const tokenSymbol = 'E2C'
 
     // Send token
     const issuranceTxOutput = await api.submitAndWait({
       TransactionType: 'Payment',
       Account: wallet.address,
       Amount: {
-        currency: tokenSymbol,
-        value: flags.quantity,
+        currency: flags.tokenSymbol,
+        value: flags.quantity.toString(),
         issuer: flags.issuerAddress,
       },
       Destination: args.toAddress,

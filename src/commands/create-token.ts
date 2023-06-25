@@ -15,8 +15,7 @@ export default class CreateToken extends AbstractXrplCommand {
     super(argv, config)
     CreateToken.flags = {
       ...AbstractXrplCommand.sharedFlags,
-      quantity: Flags.integer({char: 'q', name: 'quantity', description: 'Amount to issue', required: true, default: 888}),
-      tokenSupply: Flags.integer({char: 's', name: 'token_supply', description: 'The total initial token supply', required: true, default: 8888}),
+      tokenSupply: Flags.integer({char: 's', name: 'token_supply', description: 'The total initial token supply', required: true, default: 9999}),
       issuerDomain: Flags.string({char: 'd', name: 'issuer_domain', description: 'The token issuer domain', env: 'TOKEN_DOMAIN', required: true, default: '657561636172626F6E746F6B656E2E62697A' /* euacarbontoken.biz */}),
       issuerWallet: Flags.string({name: 'issuer_wallet', env: 'ISSUER_WALLET', description: 'Secret for the issuer wallet.', required: true}),
     }
@@ -77,7 +76,7 @@ export default class CreateToken extends AbstractXrplCommand {
       Account: issuerWallet.address,
       Amount: {
         currency: tokenSymbol,
-        value: flags.quantity,
+        value: flags.quantity.toString(),
         issuer: issuerWallet.address,
       },
       Destination: hotWallet.address,

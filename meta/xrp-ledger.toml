@@ -7,6 +7,7 @@ expires = 2024-06-17T00:00:00.000Z
 [[ACCOUNTS]]
 address = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
 desc = "Cold Issuing Wallet"
+icon = "https://euacarbontoken.biz/token_logo.png"
 
 [[ACCOUNTS]]
 address = "ryN1GyBDfXn8TBTDfG8BCZTeFZHXUUqjz"
@@ -19,6 +20,7 @@ email = "token@euacarbontoken.biz"
 [[ISSUERS]]
 address = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
 name = "EUA Carbon Token"
+icon = "https://euacarbontoken.biz/token_logo.png"
 
 [[ISSUERS.WEBLINKS]]
 url = "https://euacarbontoken.biz"
@@ -30,6 +32,7 @@ code = "E2C"
 issuer = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"
 network = "testnet"
 display_decimals = 2
+symbol = "♻️"
 
 [[TOKENS]]
 issuer = "rhQDfVcAj1RfNo9qRVXpsyeQmqgYGAWUMX"

@@ -1,4 +1,4 @@
-import {Flags} from '@oclif/core'
+import {Flags, ux} from '@oclif/core'
 import {Client, Wallet, AccountSetAsfFlags, AccountSetTfFlags} from 'xrpl'
 import 'dotenv/config'
 import AbstractXrplCommand from '../abstract-xrpl-command'
@@ -35,7 +35,7 @@ export default class CreateToken extends AbstractXrplCommand {
     const tokenSupply = flags.tokenSupply
     const domain = flags.issuerDomain
 
-    // Set issuer account
+    ux.action.start('Setting up issuer account with domain and flags.')
     const accountSetTxOutput = await api.submitAndWait({
       TransactionType: 'AccountSet',
       Account: issuerWallet.address,
@@ -43,9 +43,14 @@ export default class CreateToken extends AbstractXrplCommand {
       SetFlag: AccountSetAsfFlags.asfDefaultRipple,
       Flags: (AccountSetTfFlags.tfDisallowXRP | AccountSetTfFlags.tfRequireDestTag),
     }, {wallet: issuerWallet, autofill: true})
-    console.log('Issuer set transaction submitted. Transaction output:', accountSetTxOutput)
+    if (accountSetTxOutput.result.validated) {
+      ux.action.stop()
+      console.log(`Issuer set transaction submitted: https://testnet.xrpl.org/transactions/${accountSetTxOutput.result.hash}`)
+    } else {
+      throw new Error(`Error sending transaction!: ${JSON.stringify(accountSetTxOutput)}`)
+    }
 
-    // Set hot wallet
+    ux.action.start('Setting up hot wallet account with domain and flags.')
     const hotSetTxOutput = await api.submitAndWait({
       TransactionType: 'AccountSet',
       Account: hotWallet.address,
@@ -56,9 +61,14 @@ export default class CreateToken extends AbstractXrplCommand {
       Flags: (AccountSetTfFlags.tfDisallowXRP |
               AccountSetTfFlags.tfRequireDestTag),
     }, {wallet: hotWallet, autofill: true})
-    console.log('Hot set transaction submitted. Transaction output:', hotSetTxOutput)
+    if (hotSetTxOutput.result.validated) {
+      ux.action.stop()
+      console.log(`Hot wallet set-up transaction submitted: https://testnet.xrpl.org/transactions/${hotSetTxOutput.result.hash}`)
+    } else {
+      throw new Error(`Error sending transaction: ${JSON.stringify(hotSetTxOutput)}`)
+    }
 
-    // Create the trustline
+    ux.action.start('Creating the trustline.')
     const trustlineTxOutput = await api.submitAndWait({
       TransactionType: 'TrustSet',
       Account: hotWallet.address,
@@ -68,9 +78,14 @@ export default class CreateToken extends AbstractXrplCommand {
         value: tokenSupply.toString(),
       },
     }, {wallet: hotWallet, autofill: true})
-    console.log('Trustline transaction submitted. Transaction output:', trustlineTxOutput)
+    if (trustlineTxOutput.result.validated) {
+      ux.action.stop()
+      console.log(`Trustline set-up transaction submitted: https://testnet.xrpl.org/transactions/${trustlineTxOutput.result.hash}`)
+    } else {
+      throw new Error(`Error sending transaction: ${JSON.stringify(trustlineTxOutput)}`)
+    }
 
-    // Send token
+    ux.action.start('Sending a few tokens.')
     const issuranceTxOutput = await api.submitAndWait({
       TransactionType: 'Payment',
       Account: issuerWallet.address,
@@ -82,7 +97,12 @@ export default class CreateToken extends AbstractXrplCommand {
       Destination: hotWallet.address,
       DestinationTag: 1, // Needed since we enabled Require Destination Tags on the hot account earlier.
     }, {wallet: issuerWallet, autofill: true})
-    console.log('Issuance transaction submitted. Transaction output:', issuranceTxOutput)
+    if (issuranceTxOutput.result.validated) {
+      ux.action.stop()
+      console.log(`Tokens sent: https://testnet.xrpl.org/transactions/${issuranceTxOutput.result.hash}`)
+    } else {
+      throw new Error(`Error sending transaction!: ${JSON.stringify(issuranceTxOutput)}`)
+    }
 
     await api.disconnect()
   }

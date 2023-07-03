@@ -1,4 +1,4 @@
-import {Args} from '@oclif/core'
+import {Args, ux} from '@oclif/core'
 import {Client, Wallet} from 'xrpl'
 import 'dotenv/config'
 import AbstractXrplCommand from '../abstract-xrpl-command'
@@ -25,24 +25,32 @@ export default class SendToken extends AbstractXrplCommand {
   async run(): Promise<void> {
     const {flags, args} = await this.parse(SendToken)
 
+    const quantityText = flags.quantity.toString()
+
     const api = new Client(flags.xrplNetwork)
     await api.connect()
 
     const wallet = Wallet.fromSeed(flags.hotWallet)
 
-    // Send token
+    ux.action.start(`Sending ${quantityText} tokens`)
     const issuranceTxOutput = await api.submitAndWait({
       TransactionType: 'Payment',
       Account: wallet.address,
       Amount: {
         currency: flags.tokenSymbol,
-        value: flags.quantity.toString(),
+        value: quantityText,
         issuer: flags.issuerAddress,
       },
       Destination: args.toAddress,
       DestinationTag: 1, // Needed since we enabled Require Destination Tags on the hot account earlier.
     }, {wallet, autofill: true})
-    console.log('Transaction submitted. Transaction output:', issuranceTxOutput)
+
+    if (issuranceTxOutput.result.validated) {
+      ux.action.stop()
+      console.log(`Transaction succeeded: https://testnet.xrpl.org/transactions/${issuranceTxOutput.result.hash}`)
+    } else {
+      throw new Error(`Error sending transaction!: ${JSON.stringify(issuranceTxOutput)}`)
+    }
 
     await api.disconnect()
   }
